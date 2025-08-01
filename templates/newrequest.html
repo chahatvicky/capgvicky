@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C.R.E.A.T.E - E2E Automation</title>
+    <!-- Paths updated -->
+    <link rel="icon" href="{{ url_for('static', filename='images/capg.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- adding webpage function -->
+    <script src="{{ url_for('static', filename='js/form-webpage-function.js') }}"></script>
+    <!-- modify the logic for login session -->
+    {% if session.session_id %}
+    <script>
+        window.dispatchEvent(new Event('user-logged-in'));
+    </script>
+    {% endif %}
+</head>
+
+<body class="formpage blue-theme">
+    <div id="particles-js"></div>
+
+    <header class="app-header sticky-header small-header">
+        <div class="header-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <i class="fas fa-cogs logo-icon"></i>
+                <span>ASTRA</span>
+            </a>
+            {% if session.session_id %}
+            <div class="form-header-title">
+                <i class="fas fa-robot header-avatar small animated-avatar"></i>
+                <span>Create New Enhancement</span>
+            </div>
+            {% endif %}
+            <!-- Theme Toggle Switch -->
+            <div class="theme-switch-wrapper">
+                <i class="fas fa-sun theme-icon light-icon"></i>
+                <label class="theme-switch" for="theme-checkbox">
+                    <input type="checkbox" id="theme-checkbox" />
+                    <div class="slider round"></div>
+                </label>
+                <i class="fas fa-moon theme-icon dark-icon"></i>
+            </div>
+            <!-- Login/Logout Button Start Section -->
+            {% if session.session_id %}
+            <a href="{{ url_for('logout') }}" id="logoutButton">Logout</a>
+            {% endif %}
+            <!-- Login/Logout Button End Section -->
+        </div>
+    </header>
+
+    {% if session.session_id %}
+    <main class="form-page-content">
+        <div class="container form-container">
+            <!-- Progress Bar -->
+            <div class="progress-tracker">
+                <h3>Enhancement Request Progress</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="form-progress-bar" style="width: 0%;"></div>
+                </div>
+                <span class="progress-bar-text" id="form-progress-text">0% Complete</span>
+            </div>
+            <!-- Form Section -->
+            <form id="enhancement-form">
+                <fieldset>
+                    <legend><i class="fas fa-info-circle"></i> Basic Information</legend>
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                        <label for="account-name">ACCOUNT NAME:</label>
+                            <input type="text" id="account-name" name="account_name" required value="DFJ">
+                        </div>
+                        <div class="form-group half-width">
+                            <label for="use-case-name">USE CASE NAME:</label>
+                            <input type="text" id="use-case-name" name="use_case_name" required value="AIX CPU Memory Utilization">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group third-width">
+                            <label for="region">REGION:</label>
+                            <input type="text" id="region" name="region" required value="NA">
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="sub-region">SUB-REGION:</label>
+                            <input type="text" id="sub-region" name="sub_region" value="NA">
+                        </div>
+                        <!-- <div class="form-group third-width">
+                            <label for="deployment-id">DEPLOYMENT ID:</label>
+                            <input type="text" id="deployment-id" name="deployment_id" required value="REQ3799127">
+                        </div> -->
+                        <!-- <div class="form-group third-width">
+                            <label for="enhancement-id">ENHANCEMENT ID:</label>
+                            <input type="text" id="enhancement-id" name="enhancement_number" required value="ENHC0012345">
+                        </div> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="brief-description">SHORT DESCRIPTION:</label>
+                        <textarea id="brief-description" name="brief_description" rows="3" required>Default description goes here.</textarea>
+                    </div>
+                    <div class="form-row">
+                        <!-- <div class="form-group third-width">
+                            <label for="version">VERSION:</label>
+                            <input type="text" id="version" name="version" required value="1.0.0">
+                        </div> -->
+                        <!-- <div class="form-group third-width">
+                            <label for="form-date">DATE (DD-MMM-YYYY):</label>
+                            <input type="text" id="form-date" name="form_date" placeholder="e.g., 11-Apr-2025" required pattern="\d{2}-[A-Za-z]{3}-\d{4}" value="08-May-2025" readonly>
+                            <div class="validation-message">Format: DD-Mon-YYYY (e.g., 11-Apr-2025)</div>
+                        </div> -->
+                        <!-- <div class="form-group third-width">
+                            <label for="author">AUTHOR:</label>
+                            <input type="text" id="author" name="author" required value="Default Author">
+                        </div> -->
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend><i class="fas fa-cogs"></i> Technical Details</legend>
+                    <div class="form-row">
+                        <div class="form-group third-width">
+                            <label for="tower">TECHNOLOGY:</label>
+                            <input type="text" id="tower" name="tower" required value="Wintel">
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="itsm-tool">SNOW INTEGRATION:</label>
+                            <select id="itsm-tool" name="itsm_tool" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="cloud-on-prem">SNOW INSTANCE:</label>
+                            <select id="cloud-on-prem" name="cloud_onprem">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="cg" selected>Capgemini</option>
+                                <option value="client">Client</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="cloud-on-prem">CLOUD/ON-PREM:</label>
+                            <select id="cloud-on-prem" name="cloud_onprem" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Cloud">Cloud</option>
+                                <option value="On-Premises">On-Premises</option>
+                                <option value="Hybrid" selected>Hybrid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="tech-stack">TECHNOLOGY STACK WITH VERSION:</label>
+                        <input type="text" id="tech-stack" name="tech_stack" required value="Python 3.8">
+                    </div> -->
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="scripting-language">SCRIPTING LANGUAGE:</label>
+                            <select id="scripting-language" name="scripting_language" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="PowerShell">PowerShell</option>
+                                <option value="Python" selected>Python</option>
+                                <option value="Bash">BASH</option>
+                                <option value="Ansible">Ansible</option>
+                            </select>
+                        </div>
+                        <div class="form-group half-width">
+                            <label for="eaf-non-eaf">EAF/non EAF (DOP /Non DOP):</label>
+                            <select id="eaf-non-eaf" name="eaf_dop">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="EAF - DOP" selected>EAF - DOP</option>
+                                <option value="Non EAF - Non DOP">Non EAF - Non DOP</option>
+                                <option value="Non EAF - Non DOP">Partial EAF</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="orchestrator-name">ORCHESTRATOR NAME (if any):</label>
+                        <input type="text" id="orchestrator-name" name="orchestrator_name" value="Default Orchestrator">
+                    </div> -->
+                </fieldset>
+
+                <fieldset>
+                    <legend><i class="fas fa-robot"></i> Automation Specifics</legend>
+                    <div class="form-row">
+                        <!-- <div class="form-group third-width">
+                            <label for="type-of-automation">TYPE OF AUTOMATION:</label>
+                            <input type="text" id="type-of-automation" name="type_automation" required value="Process Automation">
+                        </div> -->
+                        <div class="form-group third-width">
+                            <label for="existing-automation">EXISTING AUTOMATION:</label>
+                            <select id="existing-automation" name="existing_automation" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                                <option value="Partial">Partial</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="manual-approval">MANUAL/EXTERNAL APPROVAL/COMMUNICATION REQUIRED:</label>
+                            <select id="manual-approval" name="manual_approval" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="trigger-for-automation">TRIGGER FOR AUTOMATION:</label>
+                        <select id="trigger-for-automation" name="trigger_automation">
+                            <option value="" disabled selected>-- Select --</option>
+                            <option value="Manual">Manual</option>
+                            <option value="Schedule" selected>Schedule</option>
+                        </select>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="benefits">BENEFITS FROM AUTOMATION:</label>
+                        <input type="text" id="benefits" name="benefits" required value="Increased Efficiency">
+                    </div> -->
+                    <div class="form-row">
+                        <!-- <div class="form-group half-width">
+                            <label for="remediation-tools">TOOLS /TECHNOLOGY USED FOR REMEDIATION ACTION:</label>
+                            <input type="text" id="remediation-tools" name="remediation_tools" required value="Python">
+                        </div> -->
+                        <div class="form-group half-width">
+                            <label for="auth-mechanism">AUTHENTICATION MECHANISM FOR BOTS:</label>
+                            <input type="text" id="auth-mechanism" name="auth_mechanism" required value="OAuth 2.0">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group half-width">
+                        <label for="ci-email-count">NO. OF CI / E-MAILS PER DAY/WEEK:</label>
+                        <input type="number" id="ci-email-count" name="ci_email_volume" required value="50">
+                    </div> -->
+                </fieldset>
+
+                <fieldset>
+                    <legend><i class="fas fa-check-double"></i> Prerequisites & Environment</legend>
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="sme-name-email">REGIONAL SME NAME & EMAIL:</label>
+                            <input type="email" id="sme-name-email" name="regional_sme_email" required value="sme@example.com">
+                        </div>
+                        <!-- <div class="form-group half-width">
+                            <label for="reviewed-on">REVIEWED ON (DD-MMM-YYYY):</label>
+                            <input type="text" id="reviewed-on" name="reviewed_on" placeholder="e.g., 08-Mar-2025" required pattern="\d{2}-[A-Za-z]{3}-\d{4}" value="08-May-2025" readonly>
+                            <div class="validation-message">Format: DD-Mon-YYYY (e.g., 08-Mar-2025)</div>
+                        </div> -->
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group third-width">
+                            <label for="customer-approval">CUSTOMER APPROVAL:</label>
+                            <select id="customer-approval" name="customer_approval" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="sdm-approval">SDM APPROVAL:</label>
+                            <select id="sdm-approval" name="sdm_approval" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Approved" selected>Approved</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="env-availability">DEV/TEST Env AVAILABLE:</label>
+                            <select id="env-availability" name="uat_env_availability" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group third-width">
+                            <label for="service-account">SERVICE ACCOUNT:</label>
+                            <select id="service-account" name="bot_test_service_account">
+                                <option value="" disabled>-- Select --</option>
+                                <option value="Available" selected>Available</option>
+                                <option value="Not Available">Not Available</option>
+                                <option value="Pending Request">Pending Request</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="jump-server">Jump/RAS SERVER AVAILABLE:</label>
+                            <select id="jump-server" name="jump_server_available" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="multidomain">MULTIDOMAIN LOGIN:</label>
+                            <select id="multidomain" name="multidomain_credentials">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                                <option value="N/A">N/A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <!-- <div class="form-group half-width">
+                            <label for="necessary-softwares">Necessary Software Readily Available:</label>
+                            <select id="necessary-softwares" name="required_software" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="PowerShell" selected>PowerShell</option>
+                                <option value="Python">Python</option>
+                                <option value="Bash">Bash</option>
+                                <option value="Ansible">Ansible</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div> -->
+                        <!-- <div class="form-group half-width">
+                            <label for="smtp-config">SMTP Config on Jump Server?:</label>
+                            <select id="smtp-config" name="smtp_config_available" required>
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                            </select>
+                        </div> -->
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="api-cli-availability">CLI/API/Modules Available & Integration Details?:</label>
+                        <textarea id="api-cli-availability" name="cli_api_modules" rows="3" required>Yes, CLI and API are available.</textarea>
+                    </div> -->
+                    <div class="form-row">
+                        <!-- <div class="form-group third-width">
+                            <label for="target-devices">Target Devices List (Servers/Switches/etc.):</label>
+                            <input type="text" id="target-devices" name="target_devices" required value="Server1, Switch1, Router1">
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="bot-placement">BOT Placement Location (Trigger Point):</label>
+                            <input type="text" id="bot-placement" name="bot_placement" required value="Cloud">
+                        </div>
+                        <div class="form-group third-width">
+                            <label for="output-path">BOT Output Path & Access:</label>
+                            <input type="text" id="output-path" name="bot_output_path" required value="/path/to/output">
+                        </div> -->
+                    </div>
+                </fieldset>
+
+
+                <fieldset class="upload-section">
+                    <legend><i class="fas fa-file-upload"></i> SOP Document Upload</legend>
+                    <div class="form-group file-upload-group">
+                        <label for="sop-file" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Select SOP Document (.docx)</span>
+                        </label>
+                        <input type="file" id="sop-file" name="sop_file" accept=".docx" required>
+                        <span id="file-name-display">No file selected</span>
+                    </div>
+                </fieldset>
+
+                <div id="status-message" role="alert"></div>
+
+                <button type="submit" id="submit-button" class="submit-button large-button">
+                    <span><i class="fas fa-paper-plane"></i> Submit Enhancement Request</span>
+                    <div class="button-loader"></div>
+                </button>
+            </form>
+        </div>
+    </main>
+    {% else %}
+    <main class="features-page-content">
+        <div class="container">
+            <h1 class="page-title">You Are Not Logged In</h1>
+            <p class="page-subtitle">Log in to experience the new enhancement request generation feature.</p>
+        </div>
+        </div>
+    </main>
+    {% endif %}
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <i class="fas fa-cogs logo-icon"></i> C.R.E.A.T.E
+            </div>
+            <div class="footer-copy">
+                &copy; 2025 CREATE Team. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts at the end, paths updated -->
+    <script src="{{ url_for('static', filename='js/particles-config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script-theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/newrequest-form-script.js') }}"></script>
+</body>
+
+</html>
